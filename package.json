@@ -1,0 +1,19 @@
+{
+  "name": "when-to-run",
+  "version": "1.0.0",
+  "description": "Suggests a good time to go for a run.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Nancy Cantu",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.2.4",
+    "dotenv": "^16.0.3",
+    "openweather-api-node": "^3.1.0",
+    "typescript": "^5.0.4",
+    "znv": "^0.3.2",
+    "zod": "^3.21.4"
+  }
+}
