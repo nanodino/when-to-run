@@ -25,5 +25,16 @@ run();
 
 async function run() {
     const hourlyConditions = await functions.getWeatherForecast();
-    functions.findBestTime(hourlyConditions);
+    const winner = functions.findBestTime(hourlyConditions);
+    console.log(
+        `The best time to go for a run in the next 48 hours is ${
+            winner.hourlyConditions.localDt
+        }, with a score of ${winner.score.toFixed(
+            2,
+        )}\n The temperature will be ${
+            winner.hourlyConditions.temperature
+        } celsius, with a relative humidity of ${
+            winner.hourlyConditions.humidity
+        }% and a UVI index of ${winner.hourlyConditions.uvi}`,
+    );
 }
