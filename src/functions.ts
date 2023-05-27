@@ -1,4 +1,5 @@
 import { SimplifiedHourlyWeather } from './schemas';
+import { weather } from '.';
 
 const idealRunningConditions: Omit<SimplifiedHourlyWeather, 'localDt'> = {
     temperature: 7.7, //for women, alleged by Outside
@@ -8,6 +9,37 @@ const idealRunningConditions: Omit<SimplifiedHourlyWeather, 'localDt'> = {
     rain: 0, // i'd rather not
     snow: 0, // hell no
 };
+
+export async function getWeatherForecast(): Promise<SimplifiedHourlyWeather[]> {
+    const hourlyConditions: SimplifiedHourlyWeather[] = [];
+    const hourlyForecast = await weather.getHourlyForecast();
+
+    for (const hour of hourlyForecast) {
+        if (hour.dt.getHours() > 6 && hour.dt.getHours() < 19) {
+            hourlyConditions.push({
+                localDt: hour.dt.toLocaleString(),
+                temperature: hour.weather.temp.cur,
+                humidity: hour.weather.humidity,
+                clouds: hour.weather.clouds,
+                uvi: hour.weather.uvi,
+                rain: hour.weather.rain,
+                snow: hour.weather.snow,
+            });
+            // console.log(
+            //     hour.dt.toLocaleString(),
+            //     scoreEachHour(hourlyConditions[hourlyConditions.length - 1]),
+            // );
+        }
+    }
+
+    return hourlyConditions;
+}
+
+export function findBestTime(hourlyConditions: SimplifiedHourlyWeather[]) {
+    const hourScores = hourlyConditions.map(scoreEachHour);
+    const bestScore = Math.max(...hourScores);
+    console.log(bestScore);
+}
 
 export function scoreEachHour(conditions: SimplifiedHourlyWeather): number {
     const { temperature, humidity, clouds, uvi, rain, snow } = conditions;
