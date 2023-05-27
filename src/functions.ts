@@ -75,5 +75,5 @@ function scoreHumidity(humidity: number): number {
 }
 
 function scoreUvi(uvi: number): number {
-    return 10 - uvi;
+    return (10 - uvi) * 10;
 }
