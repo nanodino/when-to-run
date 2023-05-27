@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { OpenWeatherAPI } from 'openweather-api-node';
 import { parseEnv, z } from 'znv';
 import { SimplifiedHourlyWeather } from './schemas';
+import { scoreEachHour } from './compare';
 
 dotenv.config();
 
@@ -28,18 +29,22 @@ async function getWeatherForecast(): Promise<SimplifiedHourlyWeather[]> {
     const hourlyForecast = await weather.getHourlyForecast();
 
     for (const hour of hourlyForecast) {
-        hourlyConditions.push({
-            localDt: hour.dt.toLocaleString(),
-            temperature: hour.weather.temp.cur,
-            humidity: hour.weather.humidity,
-            clouds: hour.weather.clouds,
-            uvi: hour.weather.uvi,
-            visibility: hour.weather.visibility,
-            rain: hour.weather.rain,
-            snow: hour.weather.snow,
-        });
+        if (hour.dt.getHours() > 6 && hour.dt.getHours() < 19) {
+            hourlyConditions.push({
+                localDt: hour.dt.toLocaleString(),
+                temperature: hour.weather.temp.cur,
+                humidity: hour.weather.humidity,
+                clouds: hour.weather.clouds,
+                uvi: hour.weather.uvi,
+                rain: hour.weather.rain,
+                snow: hour.weather.snow,
+            });
+            console.log(
+                hour.dt.toLocaleString(),
+                scoreEachHour(hourlyConditions[hourlyConditions.length - 1]),
+            );
+        }
     }
 
-    console.log(hourlyConditions);
     return hourlyConditions;
 }
