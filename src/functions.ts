@@ -5,10 +5,15 @@ const idealRunningConditions: Omit<SimplifiedHourlyWeather, 'localDt'> = {
     temperature: 7.7, //for women, alleged by Outside
     humidity: 40, //or less
     clouds: 40, //spitballing
-    uvi: 0, // or less, top end of the moderate risk category
+    uvi: 0, // i mean ideally
     rain: 0, // i'd rather not
     snow: 0, // hell no
 };
+
+interface scoredConditions {
+    hourlyConditions: SimplifiedHourlyWeather;
+    score: number;
+}
 
 export async function getWeatherForecast(): Promise<SimplifiedHourlyWeather[]> {
     const hourlyConditions: SimplifiedHourlyWeather[] = [];
@@ -25,20 +30,23 @@ export async function getWeatherForecast(): Promise<SimplifiedHourlyWeather[]> {
                 rain: hour.weather.rain,
                 snow: hour.weather.snow,
             });
-            // console.log(
-            //     hour.dt.toLocaleString(),
-            //     scoreEachHour(hourlyConditions[hourlyConditions.length - 1]),
-            // );
         }
     }
 
     return hourlyConditions;
 }
 
-export function findBestTime(hourlyConditions: SimplifiedHourlyWeather[]) {
-    const hourScores = hourlyConditions.map(scoreEachHour);
-    const bestScore = Math.max(...hourScores);
-    console.log(bestScore);
+export function findBestTime(
+    hourlyConditions: SimplifiedHourlyWeather[],
+): scoredConditions {
+    const hourScores: scoredConditions[] = hourlyConditions.map((x) => ({
+        hourlyConditions: x,
+        score: scoreEachHour(x),
+    }));
+    const bestScore = hourScores.reduce((best, test) =>
+        best.score > test.score ? best : test,
+    );
+    return bestScore;
 }
 
 export function scoreEachHour(conditions: SimplifiedHourlyWeather): number {
