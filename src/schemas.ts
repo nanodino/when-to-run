@@ -12,7 +12,6 @@ const simplifiedHourlyWeatherSchema = z.object({
     humidity: z.number().nonnegative().max(100),
     clouds: z.number().nonnegative().max(100),
     uvi: z.number(),
-    visibility: z.number(), //meters
     rain: z.number().optional(),
     snow: z.number().optional(),
 });
