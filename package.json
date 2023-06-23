@@ -4,15 +4,18 @@
   "description": "Suggests a good time to go for a run.",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "ts-node src/index.ts"
   },
   "author": "Nancy Cantu",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^20.2.4",
+    "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
     "openweather-api-node": "^3.1.0",
     "prettier": "^2.8.8",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "znv": "^0.3.2",
     "zod": "^3.21.4"

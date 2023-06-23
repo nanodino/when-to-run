@@ -1,5 +1,5 @@
 import { SimplifiedHourlyWeather } from './schemas';
-import { weather } from '.';
+import { weather } from './index';
 
 const idealRunningConditions: Omit<SimplifiedHourlyWeather, 'localDt'> = {
     temperature: 7.7, //for women, alleged by Outside
