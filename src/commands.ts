@@ -23,7 +23,7 @@ export const Ping: Command = {
 
 export const SuggestRunTime: Command = {
     name: 'suggest-run-time',
-    description: 'Suggest best time to run in next 48 hours',
+    description: 'Suggests best time to run in Toronto in the next 48 hours',
     run: async (client: Client, interaction: ChatInputCommandInteraction) => {
         const content = await whenToRun();
         await interaction.followUp({
